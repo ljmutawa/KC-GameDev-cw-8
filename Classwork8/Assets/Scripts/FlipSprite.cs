@@ -7,6 +7,11 @@ public class FlipSprite : MonoBehaviour
     SpriteRenderer sprite;
     bool isFacingRight = true;
 
+    public GameObject bullet;
+    GameObject bulletClone;
+    public Transform leftSpawn;
+    public float speed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +22,7 @@ public class FlipSprite : MonoBehaviour
     void Update()
     {
         FlipPlayer();
+        Fire();
     }
 
     void FlipPlayer()
@@ -32,4 +38,22 @@ public class FlipSprite : MonoBehaviour
             isFacingRight = false;
         }
     }
+
+    void Fire()
+    {
+        if (Input.GetMouseButtonDown(0) && isFacingRight)
+        {
+            bulletClone = Instantiate(bullet, transform.position, transform.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * speed;
+            Destroy(bulletClone, 1.3f);
+        }
+        else if (Input.GetMouseButtonDown(0) && !isFacingRight)
+        {
+            bulletClone = Instantiate(bullet, leftSpawn.position, leftSpawn.rotation);
+            bulletClone.GetComponent<Rigidbody2D>().velocity = transform.right * -speed;
+            Destroy(bulletClone, 1.3f);
+        }
+    }
+
+    
 }
